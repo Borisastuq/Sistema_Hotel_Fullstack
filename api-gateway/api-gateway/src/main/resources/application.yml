@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-huespedes
+          uri: lb://ms-huespedes
+          predicates:
+            - Path=/ms-huespedes/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-habitaciones
+          uri: lb://ms-habitaciones
+          predicates:
+            - Path=/ms-habitaciones/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-reservas
+          uri: lb://ms-reservas
+          predicates:
+            - Path=/ms-reservas/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-pagos
+          uri: lb://ms-pagos
+          predicates:
+            - Path=/ms-pagos/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-empleados
+          uri: lb://ms-empleados
+          predicates:
+            - Path=/ms-empleados/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.hotel.reserva: DEBUG
