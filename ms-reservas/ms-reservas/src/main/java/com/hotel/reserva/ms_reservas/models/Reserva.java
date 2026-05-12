@@ -22,7 +22,8 @@ public class Reserva {
     @NotNull(message = "La fecha de fin es obligatoria")
     private LocalDate fechaFin;
 
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoReserva estado;
 
     @NotNull(message = "El id de habitación es obligatorio")
     private Long habitacionId;
