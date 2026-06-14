@@ -45,4 +45,16 @@ public class HabitacionServiceImpl implements IHabitacionService {
         log.debug("Buscando habitaciones con estado: {}", estado);
         return repository.findByEstado(estado);
     }
+
+    @Override
+    public Habitacion actualizarEstado(Long id, EstadoHabitacion nuevoEstado) {
+        Habitacion habitacion = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada con id: " + id));
+
+        habitacion.setEstado(nuevoEstado);
+
+        log.debug("Habitación {} cambiada a estado: {}", id, nuevoEstado);
+        return repository.save(habitacion);
+
+    }
 }

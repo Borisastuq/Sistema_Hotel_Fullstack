@@ -45,4 +45,14 @@ public class HabitacionController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Habitacion> actualizarEstado(
+            @PathVariable Long id,
+            @RequestParam EstadoHabitacion nuevoEstado) {
+
+        Habitacion habitacionActualizada = service.actualizarEstado(id, nuevoEstado);
+        return ResponseEntity.ok(habitacionActualizada);
+    }
+
 }

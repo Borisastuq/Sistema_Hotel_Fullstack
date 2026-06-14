@@ -11,4 +11,5 @@ public interface IHabitacionService {
     Habitacion guardar(Habitacion habitacion);
     void eliminar(Long id);
     List<Habitacion> listarPorEstado(EstadoHabitacion estado);
+    Habitacion actualizarEstado(Long id, EstadoHabitacion nuevoEstado);
 }
