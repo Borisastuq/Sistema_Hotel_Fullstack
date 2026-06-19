@@ -1,0 +1,114 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  eureka:
+    build:
+      context: ./eureka-server/eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  api-gateway:
+    build:
+      context: ./api-gateway/api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  ms-huespedes:
+    build:
+      context: ./ms-huespedes/ms-huespedes
+      dockerfile: Dockerfile
+    container_name: ms-huespedes
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  ms-habitaciones:
+    build:
+      context: ./ms-habitaciones/ms-habitaciones
+      dockerfile: Dockerfile
+    container_name: ms-habitaciones
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  ms-reservas:
+    build:
+      context: ./ms-reservas/ms-reservas
+      dockerfile: Dockerfile
+    container_name: ms-reservas
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  ms-pagos:
+    build:
+      context: ./ms-pagos/ms-pagos
+      dockerfile: Dockerfile
+    container_name: ms-pagos
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  ms-empleados:
+    build:
+      context: ./ms-empleados/ms-empleados
+      dockerfile: Dockerfile
+    container_name: ms-empleados
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_started
